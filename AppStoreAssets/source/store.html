@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cleverlist store art</title>
+<style>
+  :root {
+    --rounded: ui-rounded, "SF Pro Rounded", -apple-system, system-ui, sans-serif;
+    --text: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; overflow: hidden; }
+  body { font-family: var(--text); -webkit-font-smoothing: antialiased; }
+
+  /* ---------- canvases ---------- */
+  .canvas { position: relative; overflow: hidden; }
+  .shot { width: 1320px; height: 2868px; }
+  .header { width: 1920px; height: 1080px; }
+
+  .bg { position: absolute; inset: 0; }
+  .motif { position: absolute; opacity: .35; }
+  .motif svg { width: 100%; height: 100%; display: block; }
+
+  .caption { position: absolute; left: 0; right: 0; top: 170px; text-align: center; padding: 0 90px; color: #fff; }
+  .caption .eyebrow { font: 700 46px/1 var(--rounded); letter-spacing: .14em; text-transform: uppercase; opacity: .85; margin-bottom: 34px; }
+  .caption h1 { font: 900 112px/1.02 var(--rounded); letter-spacing: -.02em; text-shadow: 0 6px 30px rgba(0,0,0,.12); }
+
+  /* ---------- phone ---------- */
+  .phone {
+    position: absolute; width: 402px; height: 874px; transform-origin: top left;
+    border-radius: 62px; background: #111; padding: 11px;
+    box-shadow: 0 0 0 2px #2a2a2a inset, 0 40px 80px rgba(0,0,0,.28), 0 10px 24px rgba(0,0,0,.18);
+  }
+  .screen { position: relative; width: 100%; height: 100%; border-radius: 52px; overflow: hidden; }
+  .island { position: absolute; top: 11px; left: 50%; width: 120px; height: 34px; margin-left: -60px; background: #000; border-radius: 20px; z-index: 5; }
+  .status { position: absolute; top: 0; left: 0; right: 0; height: 54px; display: flex; justify-content: space-between; align-items: center; padding: 6px 34px 0 42px; font: 600 16px var(--text); color: #111; z-index: 4; }
+  .status .r { display: flex; gap: 6px; align-items: center; }
+  .content { position: absolute; inset: 0; padding: 54px 18px 0; }
+
+  .navrow { display: flex; justify-content: space-between; align-items: center; height: 44px; }
+  .circle-btn { width: 40px; height: 40px; border-radius: 20px; background: rgba(255,255,255,.75); display: grid; place-items: center; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .bigtitle { font: 800 34px/1.1 var(--text); letter-spacing: -.01em; color: #111; margin: 4px 2px 16px; }
+
+  .hero { border-radius: 26px; padding: 20px; color: #fff; display: flex; align-items: center; justify-content: space-between; min-height: 150px; }
+  .hero h2 { font: 900 32px/1.05 var(--rounded); margin-top: 14px; }
+  .hero .art { width: 104px; height: 120px; }
+  .hero .art svg { width: 100%; height: 100%; }
+
+  .sectionhead { display: flex; justify-content: space-between; align-items: center; margin: 22px 2px 12px; }
+  .sectionhead b { font: 800 22px var(--text); color: #111; }
+  .pill { font: 700 15px var(--text); padding: 4px 11px; border-radius: 99px; }
+
+  .card { border-radius: 22px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 5px 12px rgba(0,0,0,.06); }
+  .card .top { display: flex; justify-content: space-between; align-items: center; }
+  .card .icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; }
+  .card .meta { font: 500 12.5px var(--text); color: #6b6b70; margin: 10px 0 4px; display: flex; align-items: center; gap: 5px; }
+  .card h3 { font: 800 21px var(--rounded); color: #111; }
+  .card .row { display: flex; justify-content: space-between; align-items: center; font: 500 14px var(--text); color: #6b6b70; margin: 6px 0 8px; }
+  .card .row b { font: 800 12.5px var(--text); }
+  .bar { height: 5px; border-radius: 3px; background: rgba(0,0,0,.08); overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 3px; }
+
+  /* list view */
+  .listtitle { font: 800 30px/1.1 var(--rounded); color: #111; margin: 6px 2px 4px; }
+  .sub { font: 500 15px var(--text); color: #5b5b60; margin: 0 2px 12px; display: flex; gap: 6px; align-items: center; }
+  .chips { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: nowrap; }
+  .chip { font: 600 13.5px var(--text); padding: 7px 12px; border-radius: 99px; background: rgba(255,255,255,.85); display: flex; gap: 5px; align-items: center; white-space: nowrap; }
+  .grouphead { display: flex; gap: 8px; align-items: baseline; font: 700 15px var(--text); color: #111; margin: 14px 5px 8px; }
+  .grouphead span { font: 700 12px var(--text); color: #8a8a8f; }
+  .item { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,.95); border-radius: 18px; padding: 12px 14px; margin-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,.04); }
+  .item .chk { width: 26px; height: 26px; border-radius: 13px; border: 2.4px solid #c7c7cc; flex: none; display: grid; place-items: center; }
+  .item .name { font: 600 16.5px var(--text); color: #111; flex: 1; }
+  .item .name small { display: block; font: 500 12.5px var(--text); color: #8a8a8f; margin-top: 2px; }
+  .item .qty { font: 700 13px var(--text); padding: 4px 9px; border-radius: 10px; }
+  .item .stripe { width: 5px; align-self: stretch; border-radius: 3px; flex: none; }
+  .item.done .name { color: #9a9a9f; text-decoration: line-through; }
+
+  .searchdock { position: absolute; left: 12px; right: 12px; bottom: 22px; }
+  .suggest { background: rgba(255,255,255,.97); border-radius: 22px; padding: 6px 0; margin-bottom: 10px; box-shadow: 0 12px 30px rgba(0,0,0,.14); }
+  .sg { display: flex; align-items: center; gap: 12px; padding: 11px 16px; }
+  .sg + .sg { border-top: 1px solid rgba(0,0,0,.06); }
+  .sg .plus { width: 30px; height: 30px; border-radius: 15px; display: grid; place-items: center; flex: none; }
+  .sg .t { flex: 1; font: 600 17px var(--text); color: #111; }
+  .sg .t small { display: block; font: 500 12.5px var(--text); color: #8a8a8f; margin-top: 2px; }
+  .sg mark { background: none; font-weight: 800; }
+  .field { display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 26px; padding: 13px 16px; font: 500 18px var(--text); color: #111; box-shadow: 0 8px 22px rgba(0,0,0,.12); }
+  .caret { display: inline-block; width: 2px; height: 22px; margin-left: 1px; vertical-align: -4px; }
+
+  /* header */
+  .h-left { position: absolute; left: 120px; top: 0; bottom: 0; width: 960px; display: flex; flex-direction: column; justify-content: center; color: #fff; }
+  .h-brand { display: flex; align-items: center; gap: 30px; margin-bottom: 44px; }
+  .h-icon { width: 150px; height: 150px; border-radius: 34px; background: #fff; padding: 14px; box-shadow: 0 18px 40px rgba(0,0,0,.18); }
+  .h-icon img { width: 100%; height: 100%; }
+  .h-brand b { font: 900 96px/1 var(--rounded); letter-spacing: -.02em; }
+  .h-left h1 { font: 800 64px/1.1 var(--rounded); letter-spacing: -.015em; margin-bottom: 40px; text-shadow: 0 4px 22px rgba(0,0,0,.12); }
+  .h-tags { display: flex; gap: 14px; flex-wrap: wrap; }
+  .h-tags span { font: 700 24px var(--rounded); padding: 11px 22px; border-radius: 99px; background: rgba(255,255,255,.22); border: 2px solid rgba(255,255,255,.35); }
+  .theme-dots { display: flex; gap: 14px; margin-top: 44px; }
+  .theme-dot { width: 76px; height: 76px; border-radius: 38px; background: rgba(255,255,255,.9); display: grid; place-items: center; box-shadow: 0 10px 24px rgba(0,0,0,.14); }
+  .theme-dot svg { width: 58px; height: 58px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+/* Theme palette mirrors Cleverlist/Theme.swift */
+const T = {
+  summer:    { accent: '#186648', secondary: '#F1B31C', bg: '#E7F3C8' },
+  winter:    { accent: '#1E50A0', secondary: '#61B2E4', bg: '#DCEFFA' },
+  christmas: { accent: '#9D1833', secondary: '#E65C64', bg: '#F8DFE1' },
+  halloween: { accent: '#623A84', secondary: '#F4AA41', bg: '#EBDCF4' },
+  autumn:    { accent: '#6A462F', secondary: '#E27022', bg: '#F6E3C4' },
+  spring:    { accent: '#674481', secondary: '#B1CC33', bg: '#EEDFF1', mid: '#8E6AAE' },
+};
+const ART = '../../Cleverlist/Assets.xcassets/';
+const artCache = {};
+async function loadArt(name) {
+  if (!artCache[name]) artCache[name] = await (await fetch(ART + 'season-' + name + '.imageset/art.svg')).text();
+  return artCache[name];
+}
+
+/* Small line icons standing in for SF Symbols */
+const I = {
+  arrow: c => `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>`,
+  basket: c => `<svg width="24" height="24" viewBox="0 0 24 24" fill="${c}"><path d="M3 9h18l-2 11H5L3 9Z"/><path d="M7 9l3-6M17 9l-3-6" stroke="${c}" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+  lock: c => `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.6"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>`,
+  people: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="${c}"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.8"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6H2Z"/><path d="M15 14.5c3.5-.5 7 1.2 7 5.5h-4.5"/></svg>`,
+  slider: c => `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2.2"/><circle cx="8" cy="17" r="2.2"/></svg>`,
+  back: c => `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>`,
+  plus: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="3.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
+  search: c => `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>`,
+  pin: c => `<svg width="14" height="14" viewBox="0 0 24 24" fill="${c}"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg>`,
+  route: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.4"/><circle cx="19" cy="19" r="2.4"/><path d="M7 6c8 1 10 4 4 7s-4 6 6 6" stroke-dasharray="1 0"/></svg>`,
+  check: c => `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>`,
+  grid: c => `<svg width="14" height="14" viewBox="0 0 24 24" fill="${c}"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>`,
+  sun: `<svg viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="12" r="5"/><g stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></g></svg>`,
+  flake: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5"/></svg>`,
+  flower: `<svg viewBox="-12 -12 24 24" fill="#fff">${[0,72,144,216,288].map(r=>`<ellipse rx="5" ry="9" cy="-6" transform="rotate(${r})"/>`).join('')}<circle r="4"/></svg>`,
+};
+
+const statusBar = `<div class="island"></div><div class="status"><span>9:41</span><span class="r">
+  <svg width="18" height="12" viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+  <svg width="16" height="12" viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.2-1.3A10.4 10.4 0 0 0 8 .7 10.4 10.4 0 0 0 .8 3.6L2 4.9a8.6 8.6 0 0 1 6-2.4Zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.2-1.3A6.8 6.8 0 0 0 8 4.3a6.8 6.8 0 0 0-4.6 1.8l1.2 1.3c.9-.8 2.1-1.3 3.4-1.3Zm0 3.5c-.5 0-1 .2-1.3.5L8 11.6l1.3-1.5c-.3-.3-.8-.5-1.3-.5Z"/></svg>
+  <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#111" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2.2" fill="#111"/><rect x="24.5" y="4.5" width="1.6" height="4" rx=".8" fill="#111" opacity=".4"/></svg>
+</span></div>`;
+
+/* Scattered white seasonal motifs, matching SeasonalBackground */
+function motifs(kind, w, h, scale, seedShift = 0) {
+  const pos = [[.08,.07],[.63,.03],[.88,.16],[.31,.21],[.05,.34],[.74,.30],[.46,.41],[.94,.48],[.19,.53],[.61,.60],[.04,.72],[.83,.69],[.37,.78],[.70,.88],[.15,.94],[.96,.97]];
+  return pos.map(([x, y], i) => {
+    const s = (22 + (i * 7) % 17) * scale;
+    const rot = ((i * 53 + seedShift) % 140) - 70;
+    const op = i % 3 === 0 ? .40 : .28;
+    return `<div class="motif" style="left:${x*w - s/2}px;top:${y*h - s/2}px;width:${s}px;height:${s}px;opacity:${op};transform:rotate(${rot}deg)">${I[kind]}</div>`;
+  }).join('');
+}
+function seasonalBg(t, w, h, kind, scale) {
+  return `<div class="bg" style="background:${t.bg}"></div>
+    <div class="bg" style="background:linear-gradient(135deg, ${t.accent}33, transparent 50%, ${t.secondary}61)"></div>
+    ${motifs(kind, w, h, scale)}`;
+}
+function surface(t) { return `background:linear-gradient(135deg, rgba(255,255,255,.97), ${t.bg})`; }
+
+/* ---------- screen contents (in iPhone points) ---------- */
+async function homeScreen(t) {
+  const art = await loadArt('summer');
+  const card = (name, meta, metaIcon, left, done, total) => `
+    <div class="card" style="${surface(t)}; border:1px solid ${t.accent}1a">
+      <div class="top"><div class="icon" style="background:${t.accent}1f">${I.basket(t.accent)}</div>${I.arrow('#8a8a8f')}</div>
+      <div class="meta">${metaIcon}${meta}</div>
+      <h3>${name}</h3>
+      <div class="row"><span>${left} left to find</span><b style="color:${t.accent}">${done}/${total}</b></div>
+      <div class="bar"><i style="width:${done/total*100}%;background:${t.accent}"></i></div>
+    </div>`;
+  return `<div class="screen">${seasonalBg(t, 380, 852, 'sun', 1)}${statusBar}
+    <div class="content">
+      <div class="navrow"><span></span><div class="circle-btn">${I.slider(t.accent)}</div></div>
+      <div class="bigtitle">Cleverlist</div>
+      <div class="hero" style="background:linear-gradient(135deg, ${t.accent}, ${t.secondary})">
+        <div>${I.arrow('#fff')}<h2>Weekend<br>groceries</h2></div>
+        <div class="art">${art}</div>
+      </div>
+      <div class="sectionhead"><b>Your lists</b><span class="pill" style="background:${t.accent}24;color:#111">3</span></div>
+      ${card('Weekend groceries', 'Private on this device', I.lock('#8a8a8f'), 7, 5, 12)}
+      ${card('Family barbecue', 'Shared with 3 people', I.people('#8a8a8f'), 4, 8, 12)}
+      ${card('Drugstore run', 'Private on this device', I.lock('#8a8a8f'), 2, 1, 3)}
+    </div></div>`;
+}
+
+function itemRow(t, name, sub, qty, color, done) {
+  return `<div class="item${done ? ' done' : ''}">
+    <span class="stripe" style="background:${color}"></span>
+    <span class="chk" style="${done ? `background:${t.accent};border-color:${t.accent}` : ''}">${done ? I.check() : ''}</span>
+    <span class="name">${name}${sub ? `<small>${sub}</small>` : ''}</span>
+    ${qty ? `<span class="qty" style="background:${t.accent}1a;color:${t.accent}">${qty}</span>` : ''}
+  </div>`;
+}
+
+async function searchScreen(t) {
+  const sg = (name, other) => `<div class="sg"><span class="plus" style="background:${t.accent}1f">${I.plus(t.accent)}</span><span class="t">${name}<small>${other}</small></span></div>`;
+  return `<div class="screen">${seasonalBg(t, 380, 852, 'flake', 1)}${statusBar}
+    <div class="content">
+      <div class="navrow"><div class="circle-btn">${I.back(t.accent)}</div><div class="circle-btn">${I.people(t.accent)}</div></div>
+      <div class="listtitle">Weekend groceries</div>
+      <div class="sub">4 things to find</div>
+      ${itemRow(t, 'Bananas', '', '6', '#F1B31C')}
+      ${itemRow(t, 'Ground coffee', '', '', '#8B5A2B')}
+      ${itemRow(t, 'Sourdough bread', '', '', '#E27022')}
+      ${itemRow(t, 'Cheddar cheese', 'Extra mature, please', '', '#61B2E4')}
+      <div class="searchdock">
+        <div class="suggest">
+          ${sg('Milk', '<mark>Mjöl</mark>k · Milch')}
+          ${sg('Oat milk', 'Havre<mark>mjöl</mark>k · Hafermilch')}
+          ${sg('Wheat flour', 'Vete<mark>mjöl</mark> · Weizenmehl')}
+          ${sg('Lactose-free milk', 'Laktosfri <mark>mjöl</mark>k · Laktosefreie Milch')}
+        </div>
+        <div class="field">${I.search('#8a8a8f')}<span>mjöl<i class="caret" style="background:${t.accent}"></i></span></div>
+      </div>
+    </div></div>`;
+}
+
+async function routeScreen(t) {
+  return `<div class="screen">${seasonalBg(t, 380, 852, 'flower', 1)}${statusBar}
+    <div class="content">
+      <div class="navrow"><div class="circle-btn">${I.back(t.accent)}</div><div class="circle-btn">${I.people(t.accent)}</div></div>
+      <div class="listtitle">Family barbecue</div>
+      <div class="sub" style="color:${t.accent};font-weight:600">${I.route(t.accent)} Sorted for Corner Market</div>
+      <div class="chips">
+        <span class="chip" style="color:${t.accent}">${I.pin(t.accent)} Corner Market</span>
+        <span class="chip" style="color:${t.accent}">${I.grid(t.accent)} Group: Section</span>
+      </div>
+      <div class="grouphead">Fruit &amp; vegetables <span>3</span></div>
+      ${itemRow(t, 'Corn on the cob', '', '4', '#B1CC33')}
+      ${itemRow(t, 'Cherry tomatoes', '', '500 g', '#E65C64')}
+      ${itemRow(t, 'Watermelon', '', '', '#B1CC33')}
+      <div class="grouphead">Meat &amp; fish <span>2</span></div>
+      ${itemRow(t, 'Halloumi', 'Added by Anna', '2', '#F1B31C')}
+      ${itemRow(t, 'Salmon fillet', '', '', '#E27022')}
+      <div class="grouphead">Drinks <span>1</span></div>
+      ${itemRow(t, 'Sparkling water', '', '6', '#61B2E4')}
+      <div class="grouphead">Sorted <span>2</span></div>
+      ${itemRow(t, 'Charcoal', '', '', '#8a8a8f', true)}
+      ${itemRow(t, 'Burger buns', '', '', '#8a8a8f', true)}
+    </div></div>`;
+}
+
+function phone(inner, x, y, scale, rot = 0) {
+  return `<div class="phone" style="left:${x}px;top:${y}px;transform:rotate(${rot}deg) scale(${scale})">${inner}</div>`;
+}
+
+/* ---------- compositions ---------- */
+async function shot(theme, kind, eyebrow, title, screenFn) {
+  const t = T[theme];
+  const scale = 2.5;
+  const x = (1320 - 402 * scale) / 2;
+  return `<div class="canvas shot">
+    <div class="bg" style="background:linear-gradient(160deg, ${t.accent} 0%, ${t.accent} 30%, ${t.mid || t.secondary} 75%, ${t.secondary} 100%)"></div>
+    ${motifs(kind, 1320, 2868, 4.2, 17)}
+    <div class="caption"><div class="eyebrow">${eyebrow}</div><h1>${title}</h1></div>
+    ${phone(await screenFn(t), x, 700, scale)}
+  </div>`;
+}
+
+async function header() {
+  const t = T.summer;
+  const [sun, snow, tulip, santa, pumpkin, leaf] = await Promise.all(['summer','winter','spring','christmas','halloween','autumn'].map(loadArt));
+  return `<div class="canvas header">
+    <div class="bg" style="background:linear-gradient(120deg, ${t.accent} 0%, #1f7a55 38%, ${t.secondary} 100%)"></div>
+    ${motifs('sun', 1920, 1080, 2.6, 5)}
+    <div class="h-left">
+      <div class="h-brand"><div class="h-icon"><img src="../../Cleverlist/Assets.xcassets/AppIcon.appiconset/Logo_lightmode.png"></div><b>Cleverlist</b></div>
+      <h1>The shopping list that<br>speaks your language.</h1>
+      <div class="h-tags"><span>English · Svenska · Deutsch</span><span>Sorted by aisle</span><span>Private by default</span></div>
+      <div class="theme-dots">${[sun, snow, tulip, santa, pumpkin, leaf].map(a => `<div class="theme-dot">${a}</div>`).join('')}</div>
+    </div>
+    ${phone(await routeScreen(T.spring), 1450, 170, 1.25, 8)}
+    ${phone(await homeScreen(t), 1110, 120, 1.25, -4)}
+  </div>`;
+}
+
+const which = new URLSearchParams(location.search).get('s') || 'header';
+(async () => {
+  const views = {
+    header: header,
+    '1': () => shot('summer', 'sun', 'Cleverlist', 'Every shopping trip, beautifully organized', homeScreen),
+    '2': () => shot('winter', 'flake', '1,000+ products', 'Type in any language. Find it in yours.', searchScreen),
+    '3': () => shot('spring', 'flower', 'Store routes &amp; sharing', 'Aisle by aisle. Shared on your terms.', routeScreen),
+  };
+  document.getElementById('root').innerHTML = await views[which]();
+  // SVG ids from OpenMoji collide when inlined several times; harmless for rendering.
+  document.body.dataset.ready = '1';
+})();
+</script>
+</body>
+</html>
