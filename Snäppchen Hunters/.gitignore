@@ -1,0 +1,18 @@
+# macOS and Xcode user data
+.DS_Store
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+
+# Build products and derived data
+DerivedData/
+build/
+*.dSYM
+
+# Signing material and local configuration
+*.mobileprovision
+*.p12
+*.cer
+*.pem
+*.key
+*.xcconfig.local
