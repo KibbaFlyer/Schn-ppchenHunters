@@ -14,16 +14,16 @@
 
   /* ---------- canvases ---------- */
   .canvas { position: relative; overflow: hidden; }
-  .shot { width: 1320px; height: 2868px; }
-  .header { width: 1920px; height: 1080px; }
+  .shot { width: 1920px; height: 1280px; }
+  .header { width: 1920px; height: 823px; }
 
   .bg { position: absolute; inset: 0; }
   .motif { position: absolute; opacity: .35; }
   .motif svg { width: 100%; height: 100%; display: block; }
 
-  .caption { position: absolute; left: 0; right: 0; top: 170px; text-align: center; padding: 0 90px; color: #fff; }
-  .caption .eyebrow { font: 700 46px/1 var(--rounded); letter-spacing: .14em; text-transform: uppercase; opacity: .85; margin-bottom: 34px; }
-  .caption h1 { font: 900 112px/1.02 var(--rounded); letter-spacing: -.02em; text-shadow: 0 6px 30px rgba(0,0,0,.12); }
+  .caption { position: absolute; left: 150px; top: 0; bottom: 0; width: 1020px; display: flex; flex-direction: column; justify-content: center; color: #fff; }
+  .caption .eyebrow { font: 700 36px/1 var(--rounded); letter-spacing: .14em; text-transform: uppercase; opacity: .85; margin-bottom: 34px; }
+  .caption h1 { font: 900 100px/1.06 var(--rounded); letter-spacing: -.02em; text-shadow: 0 6px 30px rgba(0,0,0,.12); }
 
   /* ---------- phone ---------- */
   .phone {
@@ -88,14 +88,14 @@
 
   /* header */
   .h-left { position: absolute; left: 120px; top: 0; bottom: 0; width: 960px; display: flex; flex-direction: column; justify-content: center; color: #fff; }
-  .h-brand { display: flex; align-items: center; gap: 30px; margin-bottom: 44px; }
-  .h-icon { width: 150px; height: 150px; border-radius: 34px; background: #fff; padding: 14px; box-shadow: 0 18px 40px rgba(0,0,0,.18); }
+  .h-brand { display: flex; align-items: center; gap: 26px; margin-bottom: 30px; }
+  .h-icon { width: 120px; height: 120px; border-radius: 28px; background: #fff; padding: 14px; box-shadow: 0 18px 40px rgba(0,0,0,.18); }
   .h-icon img { width: 100%; height: 100%; }
-  .h-brand b { font: 900 96px/1 var(--rounded); letter-spacing: -.02em; }
-  .h-left h1 { font: 800 64px/1.1 var(--rounded); letter-spacing: -.015em; margin-bottom: 40px; text-shadow: 0 4px 22px rgba(0,0,0,.12); }
+  .h-brand b { font: 900 84px/1 var(--rounded); letter-spacing: -.02em; }
+  .h-left h1 { font: 800 58px/1.1 var(--rounded); letter-spacing: -.015em; margin-bottom: 30px; text-shadow: 0 4px 22px rgba(0,0,0,.12); }
   .h-tags { display: flex; gap: 14px; flex-wrap: wrap; }
   .h-tags span { font: 700 24px var(--rounded); padding: 11px 22px; border-radius: 99px; background: rgba(255,255,255,.22); border: 2px solid rgba(255,255,255,.35); }
-  .theme-dots { display: flex; gap: 14px; margin-top: 44px; }
+  .theme-dots { display: flex; gap: 14px; margin-top: 32px; }
   .theme-dot { width: 76px; height: 76px; border-radius: 38px; background: rgba(255,255,255,.9); display: grid; place-items: center; box-shadow: 0 10px 24px rgba(0,0,0,.14); }
   .theme-dot svg { width: 58px; height: 58px; }
 </style>
@@ -252,13 +252,13 @@ function phone(inner, x, y, scale, rot = 0) {
 /* ---------- compositions ---------- */
 async function shot(theme, kind, eyebrow, title, screenFn) {
   const t = T[theme];
-  const scale = 2.5;
-  const x = (1320 - 402 * scale) / 2;
+  const scale = 1.35;   // whole phone visible: 874 * 1.35 = 1180 of 1280
+  const x = 1230;
   return `<div class="canvas shot">
     <div class="bg" style="background:linear-gradient(160deg, ${t.accent} 0%, ${t.accent} 30%, ${t.mid || t.secondary} 75%, ${t.secondary} 100%)"></div>
-    ${motifs(kind, 1320, 2868, 4.2, 17)}
+    ${motifs(kind, 1920, 1280, 3, 17)}
     <div class="caption"><div class="eyebrow">${eyebrow}</div><h1>${title}</h1></div>
-    ${phone(await screenFn(t), x, 700, scale)}
+    ${phone(await screenFn(t), x, 50, scale)}
   </div>`;
 }
 
@@ -267,15 +267,15 @@ async function header() {
   const [sun, snow, tulip, santa, pumpkin, leaf] = await Promise.all(['summer','winter','spring','christmas','halloween','autumn'].map(loadArt));
   return `<div class="canvas header">
     <div class="bg" style="background:linear-gradient(120deg, ${t.accent} 0%, #1f7a55 38%, ${t.secondary} 100%)"></div>
-    ${motifs('sun', 1920, 1080, 2.6, 5)}
+    ${motifs('sun', 1920, 823, 2.2, 5)}
     <div class="h-left">
       <div class="h-brand"><div class="h-icon"><img src="../../Cleverlist/Assets.xcassets/AppIcon.appiconset/Logo_lightmode.png"></div><b>Cleverlist</b></div>
       <h1>The shopping list that<br>speaks your language.</h1>
       <div class="h-tags"><span>English · Svenska · Deutsch</span><span>Sorted by aisle</span><span>Private by default</span></div>
       <div class="theme-dots">${[sun, snow, tulip, santa, pumpkin, leaf].map(a => `<div class="theme-dot">${a}</div>`).join('')}</div>
     </div>
-    ${phone(await routeScreen(T.spring), 1450, 170, 1.25, 8)}
-    ${phone(await homeScreen(t), 1110, 120, 1.25, -4)}
+    ${phone(await routeScreen(T.spring), 1470, 140, 1.12, 8)}
+    ${phone(await homeScreen(t), 1140, 90, 1.12, -4)}
   </div>`;
 }
 
@@ -283,9 +283,9 @@ const which = new URLSearchParams(location.search).get('s') || 'header';
 (async () => {
   const views = {
     header: header,
-    '1': () => shot('summer', 'sun', 'Cleverlist', 'Every shopping trip, beautifully organized', homeScreen),
-    '2': () => shot('winter', 'flake', '1,000+ products', 'Type in any language. Find it in yours.', searchScreen),
-    '3': () => shot('spring', 'flower', 'Store routes &amp; sharing', 'Aisle by aisle. Shared on your terms.', routeScreen),
+    '1': () => shot('summer', 'sun', 'Cleverlist', 'Every shopping trip,<br>beautifully organized', homeScreen),
+    '2': () => shot('winter', 'flake', '1,000+ products', 'Type in any language.<br>Find it in yours.', searchScreen),
+    '3': () => shot('spring', 'flower', 'Store routes &amp; sharing', 'Aisle by aisle.<br>Shared on your terms.', routeScreen),
   };
   document.getElementById('root').innerHTML = await views[which]();
   // SVG ids from OpenMoji collide when inlined several times; harmless for rendering.
