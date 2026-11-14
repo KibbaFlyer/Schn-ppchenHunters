@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Cleverlist Support
-permalink: /support/
+permalink: /
 ---
 
 # Cleverlist Support
