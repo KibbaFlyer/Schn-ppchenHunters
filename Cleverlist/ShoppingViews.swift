@@ -112,24 +112,8 @@ struct ShoppingListView: View {
         }.sorted { store.name($0.name) < store.name($1.name) }.prefix(5))
     }
     private var groups: [ItemGroup] {
-        let sorted = items.sorted { lhs, rhs in
-            if lhs.isChecked != rhs.isChecked { return !lhs.isChecked }
-            if let order = location?.sectionOrder {
-                let a = store.product(lhs.productID)?.sectionID.flatMap { order.firstIndex(of: $0) } ?? Int.max
-                let b = store.product(rhs.productID)?.sectionID.flatMap { order.firstIndex(of: $0) } ?? Int.max
-                if a != b { return a < b }
-            }
-            return productName(lhs) < productName(rhs)
-        }
-        var keys: [String] = []
-        var buckets: [String: [ShoppingItem]] = [:]
-        for item in sorted {
-            let key = item.isChecked ? "__checked" : groupName(item)
-            if buckets[key] == nil { keys.append(key) }
-            buckets[key, default: []].append(item)
-        }
-        return keys.map { key in
-            ItemGroup(id: key, title: key == "__checked" ? store.text("Sorted", "Fixat", "Eingepackt") : key, items: buckets[key] ?? [])
+        store.groupedItems(in: listID, sectionOrder: location?.sectionOrder, groupKey: groupName).map { group in
+            ItemGroup(id: group.key, title: group.key == "__checked" ? store.text("Sorted", "Fixat", "Eingepackt") : group.key, items: group.items)
         }
     }
 
@@ -252,7 +236,7 @@ struct ShoppingListView: View {
     }
 
     private func productName(_ item: ShoppingItem) -> String {
-        store.product(for: item).map { store.name($0.name) } ?? store.text("Unavailable product", "Otillgänglig produkt", "Nicht verfügbares Produkt")
+        store.itemName(item)
     }
 
     private func termID(_ product: Product, by mode: ItemOrganization) -> UUID? {
