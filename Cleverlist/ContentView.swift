@@ -108,7 +108,11 @@ struct ContentView: View {
         .task { if startsSync { sync.resumeIfNeeded() } }
         .onChange(of: scenePhase) { _, phase in
             guard startsSync else { return }
-            if phase == .active { sync.resumeIfNeeded() }
+            if phase == .active {
+                // Pick up items checked off in the widget before syncing them.
+                store.applyWidgetToggles()
+                sync.resumeIfNeeded()
+            }
 
         }
     }

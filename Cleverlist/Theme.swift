@@ -7,7 +7,7 @@ enum Theme: String, Codable, CaseIterable, Identifiable {
     var accent: Color { Color(hex: palette.0) }
     var secondary: Color { Color(hex: palette.1) }
     var background: Color { Color(hex: palette.2) }
-    private var palette: (String, String, String) {
+    var palette: (String, String, String) {
         switch self {
         case .summer: ("186648", "F1B31C", "E7F3C8")
         case .winter: ("1E50A0", "61B2E4", "DCEFFA")

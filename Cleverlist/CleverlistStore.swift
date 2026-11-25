@@ -4,10 +4,10 @@ import Observation
 @MainActor @Observable
 final class CleverlistStore {
     var language: Language {
-        didSet { UserDefaults.standard.set(language.rawValue, forKey: "hunter.language") }
+        didSet { UserDefaults.standard.set(language.rawValue, forKey: "hunter.language"); publishWidgetSnapshot() }
     }
     var theme: Theme {
-        didSet { UserDefaults.standard.set(theme.rawValue, forKey: "hunter.theme") }
+        didSet { UserDefaults.standard.set(theme.rawValue, forKey: "hunter.theme"); publishWidgetSnapshot() }
     }
     var lists: [ShoppingList] = []
     var items: [ShoppingItem] = []
@@ -15,8 +15,12 @@ final class CleverlistStore {
     var products: [Product] = []
     var locations: [StoreLocation] = []
     var rules: [NotificationRule] = []
-    var hiddenCloudListIDs: Set<UUID> = []
-    var readOnlyCloudListIDs: Set<UUID> = []
+    var hiddenCloudListIDs: Set<UUID> = [] {
+        didSet { if hiddenCloudListIDs != oldValue { publishWidgetSnapshot() } }
+    }
+    var readOnlyCloudListIDs: Set<UUID> = [] {
+        didSet { if readOnlyCloudListIDs != oldValue { publishWidgetSnapshot() } }
+    }
     var linkedCloudListIDs: Set<UUID> = []
     var lastError: String?
     let deviceID: String
@@ -24,6 +28,9 @@ final class CleverlistStore {
     @ObservationIgnored var onLocalChange: (() -> Void)?
     @ObservationIgnored private let directory: URL
     @ObservationIgnored private var loadingFailed = false
+    // Only the app's real store shares data with the widget; stores opened on
+    // another directory (for example in tests) stay isolated.
+    @ObservationIgnored let sharesWithWidget: Bool
 
     init(directory: URL? = nil) {
         let defaults = UserDefaults.standard
@@ -31,6 +38,7 @@ final class CleverlistStore {
         defaults.set(deviceID, forKey: "hunter.device")
         language = Language(rawValue: defaults.string(forKey: "hunter.language") ?? String(Locale.current.language.languageCode?.identifier ?? "en")) ?? .en
         theme = Theme(rawValue: defaults.string(forKey: "hunter.theme") ?? "summer") ?? .summer
+        sharesWithWidget = directory == nil
         self.directory = directory ?? URL.applicationSupportDirectory.appendingPathComponent("SnappchenHunters", isDirectory: true)
         do {
             try FileManager.default.createDirectory(at: self.directory, withIntermediateDirectories: true)
@@ -58,6 +66,7 @@ final class CleverlistStore {
                 lists = [ShoppingList(name: text("Weekly groceries", "Veckohandling", "Wocheneinkauf"))]
             }
             persist()
+            applyWidgetToggles()
         } catch {
             loadingFailed = true
             lastError = text("Could not load saved data: ", "Kunde inte läsa sparade data: ", "Gespeicherte Daten konnten nicht geladen werden: ") + error.localizedDescription
@@ -84,6 +93,33 @@ final class CleverlistStore {
     func items(in listID: UUID) -> [ShoppingItem] {
         guard !hiddenCloudListIDs.contains(listID) else { return [] }
         return items.filter { !$0.isDeleted && $0.listID == listID }
+    }
+
+    func itemName(_ item: ShoppingItem) -> String {
+        product(for: item).map { name($0.name) } ?? text("Unavailable product", "Otillgänglig produkt", "Nicht verfügbares Produkt")
+    }
+
+    // The display order of a list, shared by the list screen and the widget:
+    // open items first, then by the store's section route, then by name, bucketed
+    // by `groupKey` in order of first appearance. Checked items collect under "__checked".
+    func groupedItems(in listID: UUID, sectionOrder: [UUID]?, groupKey: (ShoppingItem) -> String) -> [(key: String, items: [ShoppingItem])] {
+        let sorted = items(in: listID).sorted { lhs, rhs in
+            if lhs.isChecked != rhs.isChecked { return !lhs.isChecked }
+            if let order = sectionOrder {
+                let a = product(lhs.productID)?.sectionID.flatMap { order.firstIndex(of: $0) } ?? Int.max
+                let b = product(rhs.productID)?.sectionID.flatMap { order.firstIndex(of: $0) } ?? Int.max
+                if a != b { return a < b }
+            }
+            return itemName(lhs) < itemName(rhs)
+        }
+        var keys: [String] = []
+        var buckets: [String: [ShoppingItem]] = [:]
+        for item in sorted {
+            let key = item.isChecked ? "__checked" : groupKey(item)
+            if buckets[key] == nil { keys.append(key) }
+            buckets[key, default: []].append(item)
+        }
+        return keys.map { ($0, buckets[$0] ?? []) }
     }
 
     var cloudStateURL: URL { directory.appendingPathComponent("cloud-sync.json") }
@@ -264,6 +300,7 @@ final class CleverlistStore {
             try encoder.encode(CatalogDatabase(terms: terms, products: products, locations: locations)).write(to: directory.appendingPathComponent("catalog.json"), options: .atomic)
             try encoder.encode(rules).write(to: directory.appendingPathComponent("notification-rules.json"), options: .atomic)
             lastError = nil
+            publishWidgetSnapshot()
             return true
         } catch {
             lastError = text("Could not save data: ", "Kunde inte spara data: ", "Daten konnten nicht gespeichert werden: ") + error.localizedDescription

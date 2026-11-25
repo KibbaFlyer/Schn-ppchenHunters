@@ -6,7 +6,20 @@
 	objectVersion = 90;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8F2E825630B1DB4B0077D855 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F2E825530B1DB4B0077D855 /* WidgetKit.framework */; };
+		8F2E825830B1DB4B0077D855 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F2E825730B1DB4B0077D855 /* SwiftUI.framework */; };
+		8F2E826530B1DB4C0077D855 /* CleverlistWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8F2E825330B1DB4B0077D855 /* CleverlistWidgetExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		8F2E826330B1DB4C0077D855 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8F2E825230B1DB4B0077D855;
+			remoteInfo = CleverlistWidgetExtension;
+		};
 		C10000000000000000000006 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000000000000000 /* Project object */;
@@ -16,16 +29,54 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		8F2E826630B1DB4C0077D855 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				8F2E826530B1DB4C0077D855 /* CleverlistWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* Cleverlist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cleverlist.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F2E825330B1DB4B0077D855 /* CleverlistWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CleverlistWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F2E825530B1DB4B0077D855 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = /System/Library/Frameworks/WidgetKit.framework; sourceTree = "<absolute>"; };
+		8F2E825730B1DB4B0077D855 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = /System/Library/Frameworks/SwiftUI.framework; sourceTree = "<absolute>"; };
 		8FCF7DAD30969738003CC71B /* Cleverlist-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Cleverlist-Info.plist"; sourceTree = "<group>"; };
 		C10000000000000000000002 /* CleverlistTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CleverlistTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8F2E826930B1DB4C0077D855 /* Exceptions for "CleverlistWidget" folder in "CleverlistWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8F2E825230B1DB4B0077D855 /* CleverlistWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		000000000000000000000010 /* Cleverlist */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Cleverlist;
+			sourceTree = "<group>";
+		};
+		8F2E825930B1DB4B0077D855 /* CleverlistWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8F2E826930B1DB4C0077D855 /* Exceptions for "CleverlistWidget" folder in "CleverlistWidgetExtension" target */,
+			);
+			path = CleverlistWidget;
+			sourceTree = "<group>";
+		};
+		8F2E827030B1DB4C0077D855 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		C10000000000000000000001 /* CleverlistTests */ = {
@@ -39,6 +90,13 @@
 		000000000000000130000000 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+			);
+		};
+		8F2E825030B1DB4B0077D855 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				8F2E825830B1DB4B0077D855 /* SwiftUI.framework in Frameworks */,
+				8F2E825630B1DB4B0077D855 /* WidgetKit.framework in Frameworks */,
 			);
 		};
 		C10000000000000000000004 /* Frameworks */ = {
@@ -55,6 +113,9 @@
 				8FCF7DAD30969738003CC71B /* Cleverlist-Info.plist */,
 				C10000000000000000000001 /* CleverlistTests */,
 				000000000000000000000010 /* Cleverlist */,
+				8F2E827030B1DB4C0077D855 /* Shared */,
+				8F2E825930B1DB4B0077D855 /* CleverlistWidget */,
+				8F2E825430B1DB4B0077D855 /* Frameworks */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,8 +125,18 @@
 			children = (
 				000000000000000000000120 /* Cleverlist.app */,
 				C10000000000000000000002 /* CleverlistTests.xctest */,
+				8F2E825330B1DB4B0077D855 /* CleverlistWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8F2E825430B1DB4B0077D855 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8F2E825530B1DB4B0077D855 /* WidgetKit.framework */,
+				8F2E825730B1DB4B0077D855 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -78,16 +149,40 @@
 				000000000000000120000000 /* Sources */,
 				000000000000000130000000 /* Frameworks */,
 				000000000000000140000000 /* Resources */,
+				8F2E826630B1DB4C0077D855 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
+			dependencies = (
+				8F2E826430B1DB4C0077D855 /* PBXTargetDependency */,
+			);
 			fileSystemSynchronizedGroups = (
 				000000000000000000000010 /* Cleverlist */,
+				8F2E827030B1DB4C0077D855 /* Shared */,
 			);
 			name = Cleverlist;
 			productName = MyApp;
 			productReference = 000000000000000000000120 /* Cleverlist.app */;
 			productType = "com.apple.product-type.application";
+		};
+		8F2E825230B1DB4B0077D855 /* CleverlistWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8F2E826A30B1DB4C0077D855 /* Build configuration list for PBXNativeTarget "CleverlistWidgetExtension" */;
+			buildPhases = (
+				8F2E824F30B1DB4B0077D855 /* Sources */,
+				8F2E825030B1DB4B0077D855 /* Frameworks */,
+				8F2E825130B1DB4B0077D855 /* Resources */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				8F2E825930B1DB4B0077D855 /* CleverlistWidget */,
+				8F2E827030B1DB4C0077D855 /* Shared */,
+			);
+			name = CleverlistWidgetExtension;
+			productName = CleverlistWidgetExtension;
+			productReference = 8F2E825330B1DB4B0077D855 /* CleverlistWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		C10000000000000000000008 /* CleverlistTests */ = {
 			isa = PBXNativeTarget;
@@ -117,11 +212,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2630;
+				LastSwiftUpdateCheck = 2720;
 				LastUpgradeCheck = 2720;
 				TargetAttributes = {
 					000000000000000100000000 = {
 						CreatedOnToolsVersion = 26.3;
+					};
+					8F2E825230B1DB4B0077D855 = {
+						CreatedOnToolsVersion = 27.2;
 					};
 				};
 			};
@@ -141,12 +239,18 @@
 			targets = (
 				C10000000000000000000008 /* CleverlistTests */,
 				000000000000000100000000 /* Cleverlist */,
+				8F2E825230B1DB4B0077D855 /* CleverlistWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		000000000000000140000000 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		8F2E825130B1DB4B0077D855 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
 			);
@@ -164,6 +268,11 @@
 			files = (
 			);
 		};
+		8F2E824F30B1DB4B0077D855 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
 		C10000000000000000000003 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
@@ -172,6 +281,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8F2E826430B1DB4C0077D855 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 8F2E825230B1DB4B0077D855 /* CleverlistWidgetExtension */;
+			targetProxy = 8F2E826330B1DB4C0077D855 /* PBXContainerItemProxy */;
+		};
 		C10000000000000000000007 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 000000000000000100000000 /* Cleverlist */;
@@ -358,7 +473,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Flygare.SnappchenHunters;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -420,7 +535,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Flygare.SnappchenHunters;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -435,6 +550,84 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+			};
+			name = Release;
+		};
+		8F2E826730B1DB4C0077D855 /* Debug configuration for PBXNativeTarget "CleverlistWidgetExtension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = CleverlistWidget/CleverlistWidget.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M9Q3N4PFX3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CleverlistWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Cleverlist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 3.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Flygare.SnappchenHunters.CleverlistWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Cleverlist Widgets";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8F2E826830B1DB4C0077D855 /* Release configuration for PBXNativeTarget "CleverlistWidgetExtension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = CleverlistWidget/CleverlistWidget.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = M9Q3N4PFX3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CleverlistWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Cleverlist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 3.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Flygare.SnappchenHunters.CleverlistWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Cleverlist Widgets";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -490,6 +683,14 @@
 			buildConfigurations = (
 				000000000000000111000000 /* Debug configuration for PBXNativeTarget "Cleverlist" */,
 				000000000000000112000000 /* Release configuration for PBXNativeTarget "Cleverlist" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		8F2E826A30B1DB4C0077D855 /* Build configuration list for PBXNativeTarget "CleverlistWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F2E826730B1DB4C0077D855 /* Debug configuration for PBXNativeTarget "CleverlistWidgetExtension" */,
+				8F2E826830B1DB4C0077D855 /* Release configuration for PBXNativeTarget "CleverlistWidgetExtension" */,
 			);
 			defaultConfigurationName = Release;
 		};
