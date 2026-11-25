@@ -52,8 +52,14 @@ struct CleverlistWidget: Widget {
 struct ListWidgetView: View {
     let entry: ListEntry
     @Environment(\.widgetFamily) private var family
+    @Environment(\.colorScheme) private var colorScheme
 
-    private var accent: Color { entry.snapshot.map { Color.widget(hex: $0.accentHex) } ?? .accentColor }
+    private var accent: Color {
+        guard let snapshot = entry.snapshot else { return .accentColor }
+        let color = Color.widget(hex: snapshot.accentHex)
+        // Seasonal accents are dark; lift them so they stay legible on the dark surface.
+        return colorScheme == .dark ? color.mix(with: .white, by: 0.45) : color
+    }
 
     var body: some View {
         content
@@ -87,8 +93,12 @@ struct ListWidgetView: View {
     @ViewBuilder
     private var background: some View {
         if let snapshot = entry.snapshot, family.isSystem {
-            // Mirrors the app's seasonal card surface.
-            LinearGradient(colors: [.white.opacity(0.97), Color.widget(hex: snapshot.backgroundHex)], startPoint: .topLeading, endPoint: .bottomTrailing)
+            // Mirrors the app's seasonal card surface; in dark mode only a faint seasonal tint remains.
+            let tint = Color.widget(hex: snapshot.backgroundHex)
+            let colors: [Color] = colorScheme == .dark
+                ? [Color(white: 0.11), tint.mix(with: .black, by: 0.8)]
+                : [.white.opacity(0.97), tint]
+            LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing)
         } else {
             Color.clear
         }
